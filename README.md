@@ -23,20 +23,23 @@ Colab son preferibles a escribir tokens en celdas. No publiques salidas con secr
 
 [![Abrir en Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/leomarmol03/ZMHK-DEPLOY/blob/arena/44c5e389-zmhk-deploy/ZMHK-Colab.ipynb)
 
-1. Pulsa **Abrir en Colab** en el enlace anterior.
-2. Elige un entorno **CPU** y ejecuta las celdas en orden.
-3. En la primera celda deja **GitHub** seleccionado: descarga automáticamente el
-   código de la rama `arena/44c5e389-zmhk-deploy`, sin necesitar archivos de Arena.
-4. En el panel **Secretos** (llave), añade `BOT_TOKEN` y `OWNER_ID` y permite el acceso
+1. Abre [esta rama en GitHub](https://github.com/leomarmol03/ZMHK-DEPLOY/tree/arena/44c5e389-zmhk-deploy)
+   con tu sesión iniciada y pulsa **Code → Download ZIP**.
+2. Pulsa **Abrir en Colab** en el enlace anterior. Como el repositorio es privado,
+   Colab puede pedirte autorizar el acceso a GitHub. Si no abre, descarga
+   `ZMHK-Colab.ipynb` desde GitHub y usa **Archivo → Subir notebook** en Colab.
+3. Elige un entorno **CPU** y ejecuta las celdas en orden.
+4. En la primera celda deja **ZIP** seleccionado y sube el ZIP descargado de GitHub.
+   Se admite tanto el ZIP de esta rama como el generado con `tools/package_colab.py`.
+5. En el panel **Secretos** (llave), añade `BOT_TOKEN` y `OWNER_ID` y permite el acceso
    del notebook. Si no los añades, se pedirán mediante entrada oculta.
-5. Omite la celda de rclone si no usarás `/mirror`.
-6. Ejecuta la última celda y envía `/start` al bot desde la cuenta del dueño.
+6. Omite la celda de rclone si no usarás `/mirror`. Ejecuta la última celda y envía
+   `/start` al bot desde la cuenta del dueño.
 7. Para detenerlo, interrumpe la última celda. No ejecutes dos instancias con el mismo token.
 
-Si prefieres trabajar sin clonar GitHub o el repositorio es privado, descarga el
-notebook y súbelo a Colab mediante **Archivo → Subir notebook**. Selecciona **ZIP**
-en la primera celda y sube `ZMHK-Colab.zip`, generado con el comando siguiente.
-No introduzcas credenciales de GitHub en el notebook ni en URLs.
+La opción **GitHub** de la primera celda solo funciona si el código es accesible
+sin autenticación; abrir un notebook privado en Colab no autentica `git` dentro del
+runtime. No es necesario hacer público el repositorio ni introducir tokens de GitHub.
 
 El notebook instala un entorno virtual separado: no altera los paquetes de Python
 que Colab utiliza. Instala `ffmpeg` y `rclone` con apt. Necesita acceso a internet y
