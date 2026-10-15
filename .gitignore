@@ -23,3 +23,14 @@ terabox.txt
 user.session
 zcl/*
 Z_Logs.txt
+
+# Colab y versión 2
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+*.log
+*.session*
+rclone.conf
+artifacts/
