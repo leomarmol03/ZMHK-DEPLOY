@@ -34,3 +34,4 @@ __pycache__/
 *.session*
 rclone.conf
 artifacts/
+.venv-colab/

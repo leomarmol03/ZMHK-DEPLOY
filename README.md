@@ -29,7 +29,7 @@ Colab son preferibles a escribir tokens en celdas. No publiques salidas con secr
    Colab puede pedirte autorizar el acceso a GitHub. Si no abre, descarga
    `ZMHK-Colab.ipynb` desde GitHub y usa **Archivo → Subir notebook** en Colab.
 3. Elige un entorno **CPU** y ejecuta las celdas en orden.
-4. En la primera celda deja **ZIP** seleccionado y sube el ZIP descargado de GitHub.
+4. En la primera celda de código sube el ZIP descargado de GitHub.
    Se admite tanto el ZIP de esta rama como el generado con `tools/package_colab.py`.
 5. En el panel **Secretos** (llave), añade `BOT_TOKEN` y `OWNER_ID` y permite el acceso
    del notebook. Si no los añades, se pedirán mediante entrada oculta.
@@ -37,18 +37,41 @@ Colab son preferibles a escribir tokens en celdas. No publiques salidas con secr
    `/start` al bot desde la cuenta del dueño.
 7. Para detenerlo, interrumpe la última celda. No ejecutes dos instancias con el mismo token.
 
-La opción **GitHub** de la primera celda solo funciona si el código es accesible
-sin autenticación; abrir un notebook privado en Colab no autentica `git` dentro del
-runtime. No es necesario hacer público el repositorio ni introducir tokens de GitHub.
+El instalador usa un ZIP porque abrir un notebook privado en Colab no autentica
+`git` dentro del runtime. No es necesario hacer público el repositorio ni introducir
+tokens de GitHub.
 
 El notebook instala un entorno virtual separado: no altera los paquetes de Python
-que Colab utiliza. Instala `ffmpeg` y `rclone` con apt. Necesita acceso a internet y
-permiso para instalar paquetes en el runtime de Colab.
+que Colab utiliza. No exige apt ni ffmpeg para arrancar. Instala `rclone` con apt solo si activas
+`INSTALL_RCLONE`. Necesita acceso a internet para descargar paquetes. Si `venv`
+falla porque no hay ensurepip, usa virtualenv aislado como alternativa y muestra
+la etapa exacta y la salida de instalación si algo falla.
 
 **Colab no garantiza disponibilidad continua**: puede desconectar o terminar el
 runtime; sus discos temporales se pierden al reiniciarlo. Este proyecto no incluye
 trucos de keep-alive ni evita los límites o las políticas de Colab. No requiere
 Drive, túneles, webhook ni puertos públicos. El notebook no monta Drive automáticamente.
+
+
+### Una celda para tu propio notebook
+
+Puedes copiar todo [`tools/colab_install.py`](tools/colab_install.py) en una celda
+Python. Es independiente de las celdas anteriores: pide el ZIP del código,
+instala dependencias y valida la configuración. Las variables al principio son:
+
+- `PROJECT_DIR`: vacío para subir ZIP, o ruta al código extraído.
+- `BOT_TOKEN` / `OWNER_ID`: déjalos vacíos para usar Secretos o entrada oculta.
+- `AUTHORIZED_USERS`, `MAX_DOWNLOAD_MB`, `TASK_TIMEOUT`: ajustes opcionales.
+- `INSTALL_RCLONE`, `RCLONE_DESTINATION`, `RCLONE_CONFIG`: solo para `/mirror`.
+
+Después, en otra celda, arranca el bot así:
+
+```python
+exec(compile((PROJECT / "tools/colab_run.py").read_text(), "colab_run.py", "exec"), globals())
+```
+
+Si falla, comparte únicamente la salida de error, sin tokens, URLs con credenciales
+ni archivos de configuración. Sin esa salida no se puede identificar la causa exacta.
 
 ### Si solo tienes el repositorio
 
